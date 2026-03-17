@@ -1,14 +1,14 @@
 @echo off
-REM ─────────────────────────────────────────────────────
-REM  Mini Outfit Builder – Quick Start (Windows CMD)
-REM ─────────────────────────────────────────────────────
+REM -------------------------------------------------
+REM  Mini Outfit Builder - Quick Start (Windows CMD)
+REM -------------------------------------------------
 REM  Usage:
 REM    setup.bat              Full setup: build + seed + open
 REM    setup.bat --build      Rebuild containers only
 REM    setup.bat --seed       Re-seed database only
 REM    setup.bat --stop       Stop all containers
 REM    setup.bat --reset      Nuke everything and start fresh
-REM ─────────────────────────────────────────────────────
+REM -------------------------------------------------
 setlocal enabledelayedexpansion
 
 cd /d "%~dp0"
@@ -19,7 +19,7 @@ echo   Mini Outfit Builder - Setup
 echo ======================================
 echo.
 
-REM ── Check Docker ──
+REM -- Check Docker --
 docker info >nul 2>&1
 if errorlevel 1 (
     echo [ERROR] Docker is not running.
@@ -29,16 +29,16 @@ if errorlevel 1 (
 )
 echo [OK] Docker is running
 
-REM ── Check Docker Compose ──
+REM -- Check Docker Compose --
 docker compose version >nul 2>&1
 if errorlevel 1 (
     echo [ERROR] Docker Compose not found.
-    echo         Please install Docker Desktop (includes Compose).
+    echo         Please install Docker Desktop with Compose.
     exit /b 1
 )
 echo [OK] Docker Compose available
 
-REM ── Create .env if missing ──
+REM -- Create .env if missing --
 if not exist .env (
     echo [INFO] Creating .env with defaults...
     (
@@ -77,7 +77,7 @@ if not exist .env (
     echo [OK] .env already exists
 )
 
-REM ── Parse argument ──
+REM -- Parse argument --
 if "%~1"=="--build"  goto :do_build
 if "%~1"=="--seed"   goto :do_seed
 if "%~1"=="--stop"   goto :do_stop
@@ -86,7 +86,7 @@ if "%~1"=="--status" goto :do_status
 if "%~1"==""         goto :do_full
 goto :usage
 
-REM ── Commands ──
+REM -- Commands --
 
 :do_full
 call :do_build_impl
@@ -129,7 +129,7 @@ goto :eof
 call :do_status_impl
 goto :eof
 
-REM ── Implementations ──
+REM -- Implementations --
 
 :do_build_impl
 echo.
@@ -195,7 +195,7 @@ goto :eof
 
 :usage
 echo.
-echo Usage: setup.bat [--build^|--seed^|--stop^|--reset^|--status]
+echo Usage: setup.bat [--build]  [--seed]  [--stop]  [--reset]  [--status]
 echo.
 echo   (no args)   Full setup: build + seed + show URLs
 echo   --build     Rebuild containers only
