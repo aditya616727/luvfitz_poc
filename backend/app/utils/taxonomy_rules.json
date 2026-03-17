@@ -1,0 +1,121 @@
+{
+  "rules": [
+    {
+      "keywords": ["shirt", "blouse", "tee", "t-shirt", "polo", "henley", "tank top", "crop top", "camisole"],
+      "category": "TOP",
+      "taxonomy": "Apparel & Accessories > Clothing > Shirts & Tops"
+    },
+    {
+      "keywords": ["hoodie", "sweatshirt", "pullover", "sweater", "cardigan", "fleece"],
+      "category": "TOP",
+      "taxonomy": "Apparel & Accessories > Clothing > Outerwear > Sweatshirts & Hoodies"
+    },
+    {
+      "keywords": ["jacket", "coat", "blazer", "parka", "windbreaker", "bomber"],
+      "category": "TOP",
+      "taxonomy": "Apparel & Accessories > Clothing > Outerwear > Coats & Jackets"
+    },
+    {
+      "keywords": ["dress"],
+      "category": "TOP",
+      "taxonomy": "Apparel & Accessories > Clothing > Dresses"
+    },
+    {
+      "keywords": ["jeans", "denim pants"],
+      "category": "BOTTOM",
+      "taxonomy": "Apparel & Accessories > Clothing > Pants > Jeans"
+    },
+    {
+      "keywords": ["pants", "trousers", "chinos", "slacks", "cargo pants", "joggers", "track pants"],
+      "category": "BOTTOM",
+      "taxonomy": "Apparel & Accessories > Clothing > Pants"
+    },
+    {
+      "keywords": ["shorts", "bermuda"],
+      "category": "BOTTOM",
+      "taxonomy": "Apparel & Accessories > Clothing > Shorts"
+    },
+    {
+      "keywords": ["skirt", "mini skirt", "maxi skirt"],
+      "category": "BOTTOM",
+      "taxonomy": "Apparel & Accessories > Clothing > Skirts"
+    },
+    {
+      "keywords": ["leggings", "tights"],
+      "category": "BOTTOM",
+      "taxonomy": "Apparel & Accessories > Clothing > Pants > Leggings"
+    },
+    {
+      "keywords": ["sneaker", "trainer", "running shoe", "athletic shoe"],
+      "category": "SHOE",
+      "taxonomy": "Apparel & Accessories > Shoes > Athletic Shoes"
+    },
+    {
+      "keywords": ["boot", "ankle boot", "chelsea boot", "combat boot"],
+      "category": "SHOE",
+      "taxonomy": "Apparel & Accessories > Shoes > Boots"
+    },
+    {
+      "keywords": ["heel", "pump", "stiletto", "wedge"],
+      "category": "SHOE",
+      "taxonomy": "Apparel & Accessories > Shoes > Heels"
+    },
+    {
+      "keywords": ["sandal", "flip flop", "slide"],
+      "category": "SHOE",
+      "taxonomy": "Apparel & Accessories > Shoes > Sandals"
+    },
+    {
+      "keywords": ["loafer", "oxford", "derby", "monk", "dress shoe", "formal shoe"],
+      "category": "SHOE",
+      "taxonomy": "Apparel & Accessories > Shoes > Dress Shoes"
+    },
+    {
+      "keywords": ["shoe", "flat", "mule", "clog", "espadrille"],
+      "category": "SHOE",
+      "taxonomy": "Apparel & Accessories > Shoes"
+    },
+    {
+      "keywords": ["hat", "cap", "beanie", "beret", "fedora", "bucket hat"],
+      "category": "ACCESSORY",
+      "taxonomy": "Apparel & Accessories > Accessories > Hats"
+    },
+    {
+      "keywords": ["sunglasses", "eyeglasses", "glasses"],
+      "category": "ACCESSORY",
+      "taxonomy": "Apparel & Accessories > Accessories > Eyewear"
+    },
+    {
+      "keywords": ["watch", "bracelet", "necklace", "ring", "earring", "jewelry"],
+      "category": "ACCESSORY",
+      "taxonomy": "Apparel & Accessories > Accessories > Jewelry"
+    },
+    {
+      "keywords": ["bag", "purse", "handbag", "backpack", "tote", "crossbody", "clutch", "wallet"],
+      "category": "ACCESSORY",
+      "taxonomy": "Apparel & Accessories > Accessories > Handbags & Wallets"
+    },
+    {
+      "keywords": ["belt", "suspenders"],
+      "category": "ACCESSORY",
+      "taxonomy": "Apparel & Accessories > Accessories > Belts"
+    },
+    {
+      "keywords": ["scarf", "tie", "bow tie", "necktie", "gloves", "mittens"],
+      "category": "ACCESSORY",
+      "taxonomy": "Apparel & Accessories > Accessories"
+    }
+  ],
+  "style_keywords": {
+    "casual": ["casual", "everyday", "relaxed", "comfortable", "chill", "basic", "lounge"],
+    "formal": ["formal", "elegant", "office", "professional", "business", "suit", "classic"],
+    "streetwear": ["street", "urban", "streetwear", "oversized", "graphic", "hip-hop", "skate"],
+    "date-night": ["date", "romantic", "evening", "night out", "sexy", "cocktail", "dinner"],
+    "retro": ["retro", "vintage", "90s", "80s", "70s", "throwback", "old school", "classic"],
+    "summer": ["summer", "tropical", "beach", "lightweight", "breezy", "floral", "sun"],
+    "winter": ["winter", "cozy", "warm", "layered", "fleece", "wool", "thermal"],
+    "sporty": ["sport", "athletic", "gym", "workout", "active", "running", "training"],
+    "boho": ["boho", "bohemian", "free spirit", "earthy", "natural", "flowy"],
+    "minimalist": ["minimal", "clean", "simple", "neutral", "monochrome", "understated"]
+  }
+}

@@ -1,0 +1,389 @@
+{
+  "_version": "Google_Product_Taxonomy_Version: 2021-09-21",
+  "_description": "Maps product keywords to exact Google Product Taxonomy categories for Apparel & Accessories",
+
+  "rules": [
+    {
+      "keywords": ["t-shirt", "tee", "tee shirt"],
+      "category": "TOP",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Shirts & Tops",
+      "google_taxonomy_id": 212
+    },
+    {
+      "keywords": ["shirt", "blouse", "button-up", "button up", "button down", "oxford shirt", "dress shirt"],
+      "category": "TOP",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Shirts & Tops",
+      "google_taxonomy_id": 212
+    },
+    {
+      "keywords": ["polo", "polo shirt", "henley"],
+      "category": "TOP",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Shirts & Tops",
+      "google_taxonomy_id": 212
+    },
+    {
+      "keywords": ["tank top", "camisole", "crop top", "tube top", "halter top", "sleeveless top", "vest top"],
+      "category": "TOP",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Shirts & Tops",
+      "google_taxonomy_id": 212
+    },
+    {
+      "keywords": ["hoodie", "sweatshirt", "pullover hoodie", "zip hoodie", "hooded"],
+      "category": "TOP",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Outerwear",
+      "google_taxonomy_id": 5322
+    },
+    {
+      "keywords": ["sweater", "cardigan", "pullover", "knit top", "knitted", "crewneck", "v-neck sweater", "turtleneck"],
+      "category": "TOP",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Shirts & Tops",
+      "google_taxonomy_id": 212
+    },
+    {
+      "keywords": ["jacket", "blazer", "bomber", "windbreaker", "anorak", "puffer", "down jacket", "denim jacket", "leather jacket", "trucker jacket"],
+      "category": "TOP",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Outerwear > Coats & Jackets",
+      "google_taxonomy_id": 5506
+    },
+    {
+      "keywords": ["coat", "overcoat", "trench coat", "parka", "peacoat", "topcoat", "raincoat"],
+      "category": "TOP",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Outerwear > Coats & Jackets",
+      "google_taxonomy_id": 5506
+    },
+    {
+      "keywords": ["vest", "gilet", "waistcoat"],
+      "category": "TOP",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Outerwear > Vests",
+      "google_taxonomy_id": 5510
+    },
+    {
+      "keywords": ["fleece"],
+      "category": "TOP",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Outerwear",
+      "google_taxonomy_id": 5322
+    },
+    {
+      "keywords": ["dress", "maxi dress", "midi dress", "mini dress", "gown", "cocktail dress", "sundress", "wrap dress", "shift dress", "bodycon"],
+      "category": "TOP",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Dresses",
+      "google_taxonomy_id": 2271
+    },
+    {
+      "keywords": ["suit", "tuxedo"],
+      "category": "TOP",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Suits",
+      "google_taxonomy_id": 5250
+    },
+    {
+      "keywords": ["romper", "jumpsuit", "overalls", "playsuit"],
+      "category": "TOP",
+      "google_taxonomy": "Apparel & Accessories > Clothing > One-Pieces > Jumpsuits & Rompers",
+      "google_taxonomy_id": 5490
+    },
+    {
+      "keywords": ["swimsuit", "bikini", "swim trunks", "swimwear", "bathing suit"],
+      "category": "TOP",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Swimwear",
+      "google_taxonomy_id": 211
+    },
+    {
+      "keywords": ["jeans", "denim pants", "denim jeans", "skinny jeans", "straight jeans", "bootcut jeans", "slim jeans", "wide-leg jeans"],
+      "category": "BOTTOM",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Pants",
+      "google_taxonomy_id": 204
+    },
+    {
+      "keywords": ["pants", "trousers", "chinos", "slacks", "cargo pants", "joggers", "track pants", "sweatpants", "khakis", "dress pants", "wide-leg pants", "culottes", "palazzo"],
+      "category": "BOTTOM",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Pants",
+      "google_taxonomy_id": 204
+    },
+    {
+      "keywords": ["shorts", "bermuda", "cargo shorts", "swim shorts", "board shorts", "athletic shorts", "running shorts", "chino shorts"],
+      "category": "BOTTOM",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Shorts",
+      "google_taxonomy_id": 207
+    },
+    {
+      "keywords": ["skirt", "mini skirt", "midi skirt", "maxi skirt", "pencil skirt", "a-line skirt", "pleated skirt", "wrap skirt", "circle skirt"],
+      "category": "BOTTOM",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Skirts",
+      "google_taxonomy_id": 3455
+    },
+    {
+      "keywords": ["knee-length skirt"],
+      "category": "BOTTOM",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Skirts > Knee-Length Skirts",
+      "google_taxonomy_id": 3598
+    },
+    {
+      "keywords": ["leggings", "tights", "yoga pants"],
+      "category": "BOTTOM",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Pants",
+      "google_taxonomy_id": 204
+    },
+    {
+      "keywords": ["skort"],
+      "category": "BOTTOM",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Skorts",
+      "google_taxonomy_id": 5344
+    },
+    {
+      "keywords": ["sneaker", "trainer", "running shoe", "athletic shoe", "tennis shoe", "sport shoe", "lifestyle shoe", "lace-up sneaker"],
+      "category": "SHOE",
+      "google_taxonomy": "Apparel & Accessories > Shoes",
+      "google_taxonomy_id": 187
+    },
+    {
+      "keywords": ["boot", "ankle boot", "chelsea boot", "combat boot", "hiking boot", "lace-up boot", "rain boot", "winter boot", "work boot", "cowboy boot", "riding boot", "knee-high boot", "western boot"],
+      "category": "SHOE",
+      "google_taxonomy": "Apparel & Accessories > Shoes",
+      "google_taxonomy_id": 187
+    },
+    {
+      "keywords": ["heel", "pump", "stiletto", "wedge", "kitten heel", "platform heel", "high heel", "block heel", "slingback"],
+      "category": "SHOE",
+      "google_taxonomy": "Apparel & Accessories > Shoes",
+      "google_taxonomy_id": 187
+    },
+    {
+      "keywords": ["sandal", "flip flop", "slide", "thong sandal", "gladiator sandal", "platform sandal", "wedge sandal", "sport sandal", "strappy sandal"],
+      "category": "SHOE",
+      "google_taxonomy": "Apparel & Accessories > Shoes",
+      "google_taxonomy_id": 187
+    },
+    {
+      "keywords": ["loafer", "oxford", "derby", "monk strap", "brogue", "dress shoe", "formal shoe", "wingtip"],
+      "category": "SHOE",
+      "google_taxonomy": "Apparel & Accessories > Shoes",
+      "google_taxonomy_id": 187
+    },
+    {
+      "keywords": ["flat", "ballet flat", "mule", "clog", "espadrille", "slipper", "slip-on", "moccasin", "smoking slipper"],
+      "category": "SHOE",
+      "google_taxonomy": "Apparel & Accessories > Shoes",
+      "google_taxonomy_id": 187
+    },
+    {
+      "keywords": ["shoe"],
+      "category": "SHOE",
+      "google_taxonomy": "Apparel & Accessories > Shoes",
+      "google_taxonomy_id": 187
+    },
+    {
+      "keywords": ["hat", "cap", "beanie", "beret", "fedora", "bucket hat", "baseball cap", "trucker cap", "visor", "newsboy cap", "panama hat", "wide-brim hat", "straw hat", "sun hat"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories > Hats",
+      "google_taxonomy_id": 173
+    },
+    {
+      "keywords": ["headband", "hair clip", "hair band", "hair tie", "scrunchie", "hair pin", "barrette"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories > Hair Accessories",
+      "google_taxonomy_id": 171
+    },
+    {
+      "keywords": ["sunglasses", "aviator", "wayfarers"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories > Sunglasses",
+      "google_taxonomy_id": 178
+    },
+    {
+      "keywords": ["eyeglasses", "glasses", "optical", "spectacles"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Health & Beauty > Personal Care > Vision Care > Eyeglasses",
+      "google_taxonomy_id": 524
+    },
+    {
+      "keywords": ["watch", "wristwatch", "smartwatch", "chronograph", "digital watch", "analog watch"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Jewelry > Watches",
+      "google_taxonomy_id": 201
+    },
+    {
+      "keywords": ["bracelet", "bangle", "cuff bracelet", "charm bracelet", "tennis bracelet"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Jewelry > Bracelets",
+      "google_taxonomy_id": 191
+    },
+    {
+      "keywords": ["necklace", "pendant", "chain", "choker", "locket"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Jewelry > Necklaces",
+      "google_taxonomy_id": 196
+    },
+    {
+      "keywords": ["ring", "signet ring", "cocktail ring", "band ring"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Jewelry > Rings",
+      "google_taxonomy_id": 200
+    },
+    {
+      "keywords": ["earring", "stud earring", "hoop earring", "drop earring", "ear cuff"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Jewelry > Earrings",
+      "google_taxonomy_id": 194
+    },
+    {
+      "keywords": ["jewelry", "jewellery", "brooch", "pin"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Jewelry",
+      "google_taxonomy_id": 188
+    },
+    {
+      "keywords": ["handbag", "purse", "shoulder bag", "satchel", "hobo bag", "bucket bag", "doctor bag"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Handbags, Wallets & Cases > Handbags",
+      "google_taxonomy_id": 6551
+    },
+    {
+      "keywords": ["tote", "tote bag", "shopper", "market bag", "canvas tote"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Handbags, Wallets & Cases > Handbags",
+      "google_taxonomy_id": 6551
+    },
+    {
+      "keywords": ["crossbody", "cross-body", "crossbody bag", "messenger bag"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Handbags, Wallets & Cases > Handbags",
+      "google_taxonomy_id": 6551
+    },
+    {
+      "keywords": ["clutch", "evening bag", "wristlet", "pouch"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Handbags, Wallets & Cases > Handbags",
+      "google_taxonomy_id": 6551
+    },
+    {
+      "keywords": ["backpack", "rucksack", "daypack"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Luggage & Bags > Backpacks",
+      "google_taxonomy_id": 110
+    },
+    {
+      "keywords": ["wallet", "billfold", "card holder", "card case", "money clip"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Handbags, Wallets & Cases > Wallets & Money Clips",
+      "google_taxonomy_id": 6552
+    },
+    {
+      "keywords": ["belt", "leather belt", "canvas belt", "braided belt", "woven belt", "dress belt"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories > Belts",
+      "google_taxonomy_id": 169
+    },
+    {
+      "keywords": ["suspenders"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories > Suspenders",
+      "google_taxonomy_id": 179
+    },
+    {
+      "keywords": ["scarf", "muffler", "neck scarf", "wrap scarf", "silk scarf"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories > Scarves & Shawls > Scarves",
+      "google_taxonomy_id": 7054
+    },
+    {
+      "keywords": ["shawl", "poncho", "wrap", "cape"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories > Scarves & Shawls > Shawls",
+      "google_taxonomy_id": 7055
+    },
+    {
+      "keywords": ["tie", "necktie", "bow tie", "bowtie", "neck tie"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories > Neckties",
+      "google_taxonomy_id": 176
+    },
+    {
+      "keywords": ["gloves", "mittens", "leather gloves", "winter gloves", "driving gloves"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories > Gloves & Mittens",
+      "google_taxonomy_id": 2020
+    },
+    {
+      "keywords": ["socks", "ankle socks", "crew socks", "dress socks", "athletic socks", "no-show socks", "knee socks"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing > Underwear & Socks > Socks",
+      "google_taxonomy_id": 209
+    },
+    {
+      "keywords": ["bag", "duffle", "duffel", "weekender", "gym bag", "travel bag", "garment bag"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Handbags, Wallets & Cases",
+      "google_taxonomy_id": 6553
+    },
+    {
+      "keywords": ["keychain", "key chain", "key ring", "lanyard"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Handbag & Wallet Accessories > Keychains",
+      "google_taxonomy_id": 6460
+    },
+    {
+      "keywords": ["earmuffs", "ear muff"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories > Earmuffs",
+      "google_taxonomy_id": 5443
+    },
+    {
+      "keywords": ["wristband", "sweatband"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories > Wristbands",
+      "google_taxonomy_id": 5422
+    },
+    {
+      "keywords": ["handkerchief", "pocket square"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories > Handkerchiefs",
+      "google_taxonomy_id": 5446
+    },
+    {
+      "keywords": ["cufflink", "cuff link"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories > Cufflinks",
+      "google_taxonomy_id": 5114
+    },
+    {
+      "keywords": ["hair accessories", "tiara"],
+      "category": "ACCESSORY",
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories > Hair Accessories",
+      "google_taxonomy_id": 171
+    }
+  ],
+
+  "fallback_taxonomy": {
+    "TOP": {
+      "google_taxonomy": "Apparel & Accessories > Clothing > Shirts & Tops",
+      "google_taxonomy_id": 212
+    },
+    "BOTTOM": {
+      "google_taxonomy": "Apparel & Accessories > Clothing > Pants",
+      "google_taxonomy_id": 204
+    },
+    "SHOE": {
+      "google_taxonomy": "Apparel & Accessories > Shoes",
+      "google_taxonomy_id": 187
+    },
+    "ACCESSORY": {
+      "google_taxonomy": "Apparel & Accessories > Clothing Accessories",
+      "google_taxonomy_id": 167
+    }
+  },
+
+  "style_keywords": {
+    "casual": ["casual", "everyday", "relaxed", "comfortable", "chill", "basic", "lounge", "easy"],
+    "formal": ["formal", "elegant", "office", "professional", "business", "suit", "classic", "tailored", "evening"],
+    "streetwear": ["street", "urban", "streetwear", "oversized", "graphic", "hip-hop", "skate", "grunge"],
+    "date-night": ["date", "romantic", "evening", "night out", "sexy", "cocktail", "dinner", "alluring"],
+    "retro": ["retro", "vintage", "90s", "80s", "70s", "throwback", "old school", "heritage", "nostalgic"],
+    "summer": ["summer", "tropical", "beach", "lightweight", "breezy", "floral", "sun", "resort", "vacation"],
+    "winter": ["winter", "cozy", "warm", "layered", "fleece", "wool", "thermal", "sherpa", "puffer"],
+    "sporty": ["sport", "athletic", "gym", "workout", "active", "running", "training", "performance", "moisture"],
+    "boho": ["boho", "bohemian", "free spirit", "earthy", "natural", "flowy", "peasant", "crochet"],
+    "minimalist": ["minimal", "clean", "simple", "neutral", "monochrome", "understated", "sleek", "modern"],
+    "luxury": ["luxury", "designer", "premium", "couture", "high-end", "exclusive", "fine"],
+    "preppy": ["preppy", "collegiate", "ivy", "country club", "nautical", "plaid"]
+  }
+}
