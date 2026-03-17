@@ -4,7 +4,7 @@
 
 Build a system that:
 
--   Scrapes fashion products from **H&M (US), Amazon (US), and Nordstrom
+-   Scrapes fashion products from **Zappos (US), Amazon (US), and SSENSE
     (US)**
 -   Stores and categorizes products using **Google Apparel Taxonomy**
 -   Refreshes **product price and availability daily**
@@ -72,9 +72,9 @@ Build a system that:
 Each retailer has its own scraper module.
 
     scrapers/
-       hm_scraper.py
+       zappos_scraper.py
        amazon_scraper.py
-       nordstrom_scraper.py
+       ssense_scraper.py
 
 ### Scraper Workflow
 

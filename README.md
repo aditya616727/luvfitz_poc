@@ -1,6 +1,6 @@
 # 👗 Mini Outfit Builder
 
-A production-ready fashion outfit generation system that scrapes products from **H&M**, **Amazon**, and **Nordstrom**, categorizes them using **Google Apparel Taxonomy**, and generates styled outfits searchable by **vibe** (Date Night, Streetwear, Casual, Retro, etc.).
+A production-ready fashion outfit generation system that scrapes products from **Zappos**, **Amazon**, and **SSENSE**, categorizes them using **Google Apparel Taxonomy**, and generates styled outfits searchable by **vibe** (Date Night, Streetwear, Casual, Retro, etc.).
 
 ---
 
@@ -8,7 +8,7 @@ A production-ready fashion outfit generation system that scrapes products from *
 
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   H&M Scraper   │    │  Amazon Scraper   │    │Nordstrom Scraper│
+│ Zappos Scraper  │    │  Amazon Scraper   │    │ SSENSE Scraper  │
 └────────┬────────┘    └────────┬─────────┘    └────────┬────────┘
          │                      │                       │
          └──────────────┬───────┴───────────────────────┘
@@ -89,9 +89,9 @@ poc_J2/
 │   │   │   └── outfit_service.py    # Outfit generation + scoring
 │   │   ├── scrapers/
 │   │   │   ├── base.py         # Abstract scraper + normalization
-│   │   │   ├── hm_scraper.py
+│   │   │   ├── zappos_scraper.py
 │   │   │   ├── amazon_scraper.py
-│   │   │   └── nordstrom_scraper.py
+│   │   │   └── ssense_scraper.py
 │   │   ├── workers/
 │   │   │   ├── celery_app.py   # Celery configuration + beat schedule
 │   │   │   ├── scrape_tasks.py # Scraping tasks
@@ -138,14 +138,51 @@ poc_J2/
 - [Docker](https://docs.docker.com/get-docker/) & [Docker Compose](https://docs.docker.com/compose/install/)
 - (Optional) Node.js 20+, Python 3.12+ for local development
 
-### 1. Clone & Configure
+### One-Command Setup (Recommended)
+
+Cross-platform setup scripts handle everything — Docker validation, `.env` creation, building, health checks, and seeding:
+
+| OS | Command |
+|----|---------|
+| **macOS / Linux** | `./setup.sh` |
+| **Windows (CMD)** | `setup.bat` |
+| **Windows (PowerShell)** | `.\setup.ps1` |
+
+#### Available Flags
+
+```bash
+# macOS / Linux
+./setup.sh              # Build, wait for health, seed, and start
+./setup.sh --build      # Rebuild containers only
+./setup.sh --seed       # Re-seed the database only
+./setup.sh --stop       # Stop all containers
+./setup.sh --reset      # Full reset (destroy volumes, rebuild, re-seed)
+./setup.sh --status     # Show container status
+
+# Windows CMD
+setup.bat --build
+setup.bat --seed
+setup.bat --reset
+
+# Windows PowerShell
+.\setup.ps1 -Action build
+.\setup.ps1 -Action seed
+.\setup.ps1 -Action reset
+```
+
+### Manual Setup
+
+<details>
+<summary>Click to expand manual steps</summary>
+
+#### 1. Clone & Configure
 
 ```bash
 cd poc_J2
 cp .env.example .env
 ```
 
-### 2. Start Everything
+#### 2. Start Everything
 
 ```bash
 docker compose up --build
@@ -159,19 +196,21 @@ This starts:
 - **Celery Beat** (scheduled tasks)
 - **Frontend** on port `3000`
 
-### 3. Seed the Database
+#### 3. Seed the Database
 
 ```bash
 docker compose exec backend python -m app.scripts.seed
 ```
 
-This populates the database with **40 sample products** across all categories and generates **~50 outfits**.
+This populates the database with **40 sample products** across all categories and generates **~38 outfits**.
 
-### 4. Open the App
+#### 4. Open the App
 
 - **Frontend**: http://localhost:3000
 - **API Docs**: http://localhost:8000/docs
 - **API Health**: http://localhost:8000/health
+
+</details>
 
 ---
 
@@ -264,7 +303,7 @@ docker compose exec backend python -m app.scripts.seed
 
 - **`q`** – Search/vibe query (e.g., `date-night`, `casual`, `retro`)
 - **`category`** – Filter: `TOP`, `BOTTOM`, `SHOE`, `ACCESSORY`
-- **`source`** – Filter: `HM`, `AMAZON`, `NORDSTROM`
+- **`source`** – Filter: `ZAPPOS`, `AMAZON`, `SSENSE`
 - **`min_price` / `max_price`** – Price range filter
 - **`page` / `per_page`** – Pagination
 

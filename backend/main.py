@@ -28,8 +28,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Mini Outfit Builder API",
     description=(
-        "Fashion outfit generation system that scrapes products from H&M, Amazon, "
-        "and Nordstrom, then creates styled outfits searchable by vibe."
+        "Fashion outfit generation system that scrapes products from Zappos, Amazon, "
+        "and SSENSE, then creates styled outfits searchable by vibe."
     ),
     version="1.0.0",
     lifespan=lifespan,

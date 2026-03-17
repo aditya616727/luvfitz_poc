@@ -31,7 +31,7 @@ class SSENSEScraper(BaseScraper):
         ("women-accessories", f"{BASE_URL}/en-us/women/accessories", "ACCESSORY"),
     ]
 
-    async def scrape(self, max_products: int = 100) -> list[ScrapedProduct]:
+    async def scrape(self, max_products: int = 300) -> list[ScrapedProduct]:
         products: list[ScrapedProduct] = []
         per_category = max(max_products // len(self.CATEGORY_URLS), 15)
 

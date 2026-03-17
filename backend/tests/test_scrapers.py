@@ -12,8 +12,8 @@ class TestScrapedProduct:
             name="Classic Oxford Shirt",
             price=29.99,
             product_url="https://example.com/shirt",
-            source="HM",
-            brand="H&M",
+            source="ZAPPOS",
+            brand="Ralph Lauren",
             color="White",
             description="A classic button-down shirt",
         )
@@ -42,7 +42,7 @@ class TestScrapedProduct:
             name="Unknown Item",
             price=10.00,
             product_url="https://example.com/unknown",
-            source="NORDSTROM",
+            source="SSENSE",
         )
         product.normalize()
 
@@ -53,7 +53,7 @@ class TestScrapedProduct:
             name="Test Shirt",
             price=25.00,
             product_url="https://example.com/test",
-            source="HM",
+            source="ZAPPOS",
         )
         product.normalize()
         d = product.to_dict()
@@ -61,7 +61,7 @@ class TestScrapedProduct:
         assert isinstance(d, dict)
         assert d["name"] == "Test Shirt"
         assert d["price"] == 25.00
-        assert d["source"] == "HM"
+        assert d["source"] == "ZAPPOS"
         assert "category" in d
         assert "style_tags" in d
 
