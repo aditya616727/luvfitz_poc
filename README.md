@@ -396,7 +396,3 @@ See `.env.example` for all configuration options. Key variables:
 - [ ] **Image Generation** – AI outfit mood boards
 
 ---
-
-## 📄 License
-
-MIT
