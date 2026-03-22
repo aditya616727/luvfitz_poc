@@ -81,6 +81,15 @@ class AmazonScraper(BaseScraper):
                 logger.warning("[Amazon] CAPTCHA detected – stopping this category.")
                 break
 
+            # Log page diagnostics for debugging (helpful when selectors don't match)
+            result_cards = adaptor.css("div[data-component-type='s-search-result']")
+            if not result_cards:
+                page_text = (adaptor.text or "")[:300]
+                logger.warning(
+                    f"[Amazon] No search-result divs found on page {page}. "
+                    f"Page text preview: {page_text!r}"
+                )
+
             page_products = self._extract_products(adaptor, cat_hint)
             if not page_products:
                 logger.info(f"[Amazon] No products on page {page}, stopping.")
@@ -96,11 +105,23 @@ class AmazonScraper(BaseScraper):
     def _extract_products(self, response, cat_hint: str) -> list[ScrapedProduct]:
         """
         Extract products from Amazon search results using Scrapling selectors.
-        Uses .css() and css_first() helper, .attrib, and .text from the response.
+        Tries multiple selector strategies to handle different page layouts
+        (bot-detected pages, mobile layouts, regional variants).
         """
         items: list[ScrapedProduct] = []
 
+        # Strategy 1: Standard search result cards
         result_cards = response.css("div[data-component-type='s-search-result']")
+
+        # Strategy 2: Alternate layout (some bot-mitigated pages)
+        if not result_cards:
+            result_cards = response.css("div.s-result-item[data-asin]")
+
+        # Strategy 3: Broader fallback
+        if not result_cards:
+            result_cards = response.css("[data-asin]")
+            # Filter out non-product elements (e.g. ads container)
+            result_cards = [c for c in result_cards if c.attrib.get("data-asin", "").strip()]
 
         for card in result_cards:
             try:
