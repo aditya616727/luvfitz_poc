@@ -32,8 +32,11 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Install Playwright browsers (Camoufox auto-downloads Firefox on first use)
+# Install Playwright browsers + pre-download Camoufox Firefox
 RUN playwright install chromium --with-deps || true
+RUN python -c "from camoufox.pkgman import installed_verstr; print('Camoufox:', installed_verstr() or 'downloading...'); import camoufox; camoufox.sync_api" 2>/dev/null || \
+    python -c "import camoufox" 2>/dev/null || \
+    echo "Camoufox pre-download skipped (will download on first use)"
 
 # App code
 COPY . .

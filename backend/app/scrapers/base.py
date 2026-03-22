@@ -198,13 +198,26 @@ class BaseScraper(ABC):
                 )
                 return await self._fetch_dynamic(url)
         except Exception as e:
-            logger.warning(
-                f"[{self.SOURCE}] StealthyFetcher failed for {url}: {e}, trying DynamicFetcher"
-            )
+            err_msg = str(e).lower()
+            # Common Camoufox failures: Firefox binary not found, download failed,
+            # platform not supported, permission denied, etc.
+            if any(kw in err_msg for kw in [
+                "camoufox", "firefox", "download", "binary", "executable",
+                "permission", "oserror", "filenotfounderror", "not found",
+                "platform", "no such file",
+            ]):
+                logger.warning(
+                    f"[{self.SOURCE}] StealthyFetcher (Camoufox) unavailable: {e}. "
+                    f"Falling back to DynamicFetcher (Playwright)."
+                )
+            else:
+                logger.warning(
+                    f"[{self.SOURCE}] StealthyFetcher failed for {url}: {e}, trying DynamicFetcher"
+                )
             return await self._fetch_dynamic(url)
 
     async def _fetch_dynamic(self, url: str):
-        """Tier 3: Last resort – DynamicFetcher with stealth patches."""
+        """Tier 3: DynamicFetcher with stealth patches. Falls back to basic Fetcher."""
         try:
             fetcher = self._get_dynamic_fetcher()
             response = await asyncio.to_thread(
@@ -217,10 +230,31 @@ class BaseScraper(ABC):
             if response.status == 200:
                 logger.debug(f"[{self.SOURCE}] DynamicFetcher OK: {url}")
                 return response
-            logger.error(f"[{self.SOURCE}] All fetchers failed for {url}")
+            logger.warning(
+                f"[{self.SOURCE}] DynamicFetcher returned {response.status} for {url}, "
+                f"trying basic Fetcher as last resort"
+            )
+        except Exception as e:
+            logger.warning(
+                f"[{self.SOURCE}] DynamicFetcher failed for {url}: {e}, "
+                f"trying basic Fetcher as last resort"
+            )
+
+        # Tier 4: Last-resort basic HTTP Fetcher with stealth headers
+        try:
+            response = await asyncio.to_thread(
+                self._fetcher.get,
+                url,
+                stealthy_headers=True,
+                follow_redirects=True,
+            )
+            if response.status == 200:
+                logger.debug(f"[{self.SOURCE}] Fetcher (last-resort) OK: {url}")
+                return response
+            logger.error(f"[{self.SOURCE}] All fetchers failed for {url} (status {response.status})")
             return None
         except Exception as e:
-            logger.error(f"[{self.SOURCE}] DynamicFetcher failed for {url}: {e}")
+            logger.error(f"[{self.SOURCE}] All fetchers failed for {url}: {e}")
             return None
 
     def _parse_jsonld(self, response) -> list[dict]:
