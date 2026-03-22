@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.services.outfit_service import OutfitService
-from app.workers.scrape_tasks import scrape_all, scrape_zappos, scrape_amazon, scrape_ssense
+from app.workers.scrape_tasks import scrape_all, scrape_zappos, scrape_amazon, scrape_ssense, scrape_hnm
 from app.workers.refresh_tasks import refresh_all_products
 from app.workers.outfit_tasks import regenerate_outfits, generate_additional_outfits
 
@@ -16,7 +16,7 @@ router = APIRouter(prefix="/admin", tags=["Admin"])
 
 @router.post("/scrape")
 def trigger_scrape(
-    source: str = Query("all", description="Source to scrape: all, zappos, amazon, ssense"),
+    source: str = Query("all", description="Source to scrape: all, zappos, amazon, ssense, hnm"),
     max_products: int = Query(200, ge=1, le=500),
 ):
     """Trigger scraping tasks."""
@@ -33,6 +33,9 @@ def trigger_scrape(
     elif source == "ssense":
         scrape_ssense.delay(max_products)
         return {"status": "SSENSE scraper queued"}
+    elif source == "hnm":
+        scrape_hnm.delay(max_products)
+        return {"status": "H&M scraper queued"}
     else:
         return {"error": f"Unknown source: {source}"}
 

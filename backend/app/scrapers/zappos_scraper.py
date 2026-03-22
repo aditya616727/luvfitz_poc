@@ -1,15 +1,12 @@
 """
-Zappos.com Scraper – scrapes real fashion products from zappos.com
-Uses JSON-LD structured data embedded in search/category result pages.
-Each category page provides ~100 products with full schema.org Product data.
+Zappos.com Scraper – powered by Scrapling.
+Uses Scrapling's Selector for smart CSS selection and JSON-LD extraction.
+Falls back from Fetcher → StealthyFetcher → DynamicFetcher automatically.
 """
 
-import json
+import re
 
-from bs4 import BeautifulSoup
-import httpx
-
-from app.scrapers.base import BaseScraper, ScrapedProduct
+from app.scrapers.base import BaseScraper, ScrapedProduct, css_first
 from app.core.logging import logger
 
 
@@ -34,34 +31,38 @@ class ZapposScraper(BaseScraper):
         products: list[ScrapedProduct] = []
         per_category = max(max_products // len(self.CATEGORY_URLS), 20)
 
-        async with httpx.AsyncClient() as client:
-            for label, url, cat_hint in self.CATEGORY_URLS:
-                try:
-                    html = await self._fetch(url, client)
-                    page_products = self._parse_jsonld(html, label, cat_hint)
-                    # Limit per category for even distribution
-                    products.extend(page_products[:per_category])
-                    logger.info(f"[Zappos] {label}: found {len(page_products)} products")
-                except Exception as e:
-                    logger.error(f"[Zappos] Failed to scrape {label}: {e}")
+        for label, url, cat_hint in self.CATEGORY_URLS:
+            try:
+                adaptor = await self._fetch(url)
+                if adaptor is None:
+                    logger.error(f"[Zappos] Failed to fetch {label}")
+                    continue
+
+                page_products = self._parse_products(adaptor, label, cat_hint)
+                products.extend(page_products[:per_category])
+                logger.info(f"[Zappos] {label}: found {len(page_products)} products")
+            except Exception as e:
+                logger.error(f"[Zappos] Failed to scrape {label}: {e}")
 
         logger.info(f"[Zappos] Total scraped: {len(products[:max_products])} products")
         return products[:max_products]
 
-    def _parse_jsonld(self, html: str, label: str, cat_hint: str = "") -> list[ScrapedProduct]:
-        """Extract products from JSON-LD script tags."""
-        soup = BeautifulSoup(html, "html.parser")
+    def _parse_products(self, adaptor, label: str, cat_hint: str) -> list[ScrapedProduct]:
+        """
+        Extract products from Zappos page using Scrapling's Adaptor.
+        Primary: JSON-LD structured data. Fallback: HTML CSS selectors.
+        """
         items: list[ScrapedProduct] = []
 
-        ld_scripts = soup.select('script[type="application/ld+json"]')
+        # ── Primary: JSON-LD structured data ──
+        jsonld_products = self._parse_jsonld(adaptor)
 
-        for script in ld_scripts:
+        for data in jsonld_products:
             try:
-                data = json.loads(script.string)
-                if data.get("@type") != "Product":
+                name = data.get("name", "").strip()
+                if not name:
                     continue
 
-                name = data.get("name", "").strip()
                 brand = ""
                 brand_data = data.get("brand", {})
                 if isinstance(brand_data, dict):
@@ -69,36 +70,31 @@ class ZapposScraper(BaseScraper):
                 elif isinstance(brand_data, str):
                     brand = brand_data
 
-                # Price from offers
                 offers = data.get("offers", {})
-                price_val = offers.get("price", 0)
                 try:
-                    price = float(price_val)
+                    price = float(offers.get("price", 0))
                 except (ValueError, TypeError):
                     price = 0.0
 
-                # Currency check – only USD
                 currency = offers.get("priceCurrency", "USD")
                 if currency != "USD":
                     continue
 
-                # Image URL
                 image_url = data.get("image", "")
+                if isinstance(image_url, list):
+                    image_url = image_url[0] if image_url else ""
 
-                # Product URL
                 raw_url = data.get("url", "") or offers.get("url", "")
                 if raw_url and not raw_url.startswith("http"):
                     product_url = f"{self.BASE_URL}{raw_url}"
                 else:
                     product_url = raw_url
 
-                # Color
                 color = data.get("color", "")
                 if isinstance(color, list):
                     color = color[0] if color else ""
 
-                # Description from name + brand
-                description = f"{brand} {name}" if brand else name
+                description = data.get("description", "") or f"{brand} {name}"
 
                 if name and price > 0 and product_url:
                     items.append(
@@ -114,7 +110,65 @@ class ZapposScraper(BaseScraper):
                             category_hint=cat_hint,
                         )
                     )
-            except (json.JSONDecodeError, KeyError, TypeError) as e:
-                logger.debug(f"[Zappos] Skipping JSON-LD parse error: {e}")
+            except (KeyError, TypeError) as e:
+                logger.debug(f"[Zappos] Skipping product parse error: {e}")
+
+        # ── Fallback: HTML scraping with Scrapling's smart CSS selectors ──
+        if not items:
+            items = self._parse_html(adaptor, cat_hint)
+
+        return items
+
+    def _parse_html(self, adaptor, cat_hint: str) -> list[ScrapedProduct]:
+        """Fallback HTML parsing using Scrapling's CSS selectors + auto-matching."""
+        items: list[ScrapedProduct] = []
+
+        product_cards = adaptor.css("article[data-product-id]")
+        if not product_cards:
+            product_cards = adaptor.css("[itemtype*='Product']")
+        if not product_cards:
+            product_cards = adaptor.css(".product-card, .product")
+
+        for card in product_cards:
+            try:
+                name_el = css_first(card, "span[itemprop='name'], .product-name, h3, h2")
+                name = name_el.text.strip() if name_el else ""
+
+                price_el = css_first(card,
+                    "span[itemprop='price'], .product-price, span[class*='price']"
+                )
+                price = 0.0
+                if price_el:
+                    match = re.search(r"[\d]+\.?\d*", price_el.text.replace(",", ""))
+                    if match:
+                        price = float(match.group())
+
+                brand_el = css_first(card, "span[itemprop='brand'], .brand-name")
+                brand = brand_el.text.strip() if brand_el else ""
+
+                link_el = css_first(card, "a[href]")
+                raw_url = link_el.attrib.get("href", "") if link_el else ""
+                if raw_url and not raw_url.startswith("http"):
+                    product_url = f"{self.BASE_URL}{raw_url}"
+                else:
+                    product_url = raw_url
+
+                img_el = css_first(card, "img[src]")
+                image_url = img_el.attrib.get("src", "") if img_el else ""
+
+                if name and price > 0 and product_url:
+                    items.append(
+                        ScrapedProduct(
+                            name=name,
+                            price=round(price, 2),
+                            product_url=product_url,
+                            source="ZAPPOS",
+                            brand=brand,
+                            image_url=image_url,
+                            category_hint=cat_hint,
+                        )
+                    )
+            except Exception as e:
+                logger.debug(f"[Zappos] HTML parse error: {e}")
 
         return items

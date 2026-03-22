@@ -38,6 +38,7 @@ class SourceEnum(str, enum.Enum):
     ZAPPOS = "ZAPPOS"
     AMAZON = "AMAZON"
     SSENSE = "SSENSE"
+    HNM = "HNM"
 
 
 # ──────────────────────────────────────────────

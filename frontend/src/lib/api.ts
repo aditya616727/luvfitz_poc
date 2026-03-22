@@ -47,7 +47,7 @@ export interface Product {
   google_product_category: string | null;
   google_taxonomy_id: number | null;
   availability: boolean;
-  source: "ZAPPOS" | "AMAZON" | "SSENSE";
+  source: "ZAPPOS" | "AMAZON" | "SSENSE" | "HNM";
   style_tags: string[];
   last_updated: string | null;
   created_at: string | null;

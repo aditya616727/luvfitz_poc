@@ -24,12 +24,14 @@ const SOURCE_COLORS: Record<string, string> = {
   ZAPPOS: "bg-teal-100 text-teal-800",
   AMAZON: "bg-orange-100 text-orange-800",
   SSENSE: "bg-purple-100 text-purple-800",
+  HNM: "bg-red-100 text-red-800",
 };
 
 const SOURCE_LABELS: Record<string, string> = {
   ZAPPOS: "Zappos",
   AMAZON: "Amazon",
   SSENSE: "SSENSE",
+  HNM: "H&M",
 };
 
 // ── Product Card ──

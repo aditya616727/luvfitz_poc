@@ -1,22 +1,39 @@
 """
-Price & availability refresh Celery tasks.
+Price & availability refresh Celery tasks – powered by Scrapling.
 Runs daily to keep product data fresh.
+Uses Fetcher for lightweight sites, StealthyFetcher for Amazon.
 """
 
 import asyncio
 import re
 from datetime import datetime, timezone
 
-import httpx
-from bs4 import BeautifulSoup
+from scrapling import Fetcher, StealthyFetcher
 
+from app.scrapers.base import css_first
 from app.workers.celery_app import celery_app
 from app.core.database import SessionLocal
-from app.core.config import get_settings
 from app.core.logging import logger
 from app.models.models import Product
 
-settings = get_settings()
+
+# ── Lazy-initialised fetchers (reused across tasks) ──
+_fetcher: Fetcher | None = None
+_stealthy: StealthyFetcher | None = None
+
+
+def _get_fetcher() -> Fetcher:
+    global _fetcher
+    if _fetcher is None:
+        _fetcher = Fetcher()
+    return _fetcher
+
+
+def _get_stealthy() -> StealthyFetcher:
+    global _stealthy
+    if _stealthy is None:
+        _stealthy = StealthyFetcher()
+    return _stealthy
 
 
 def _run_async(coro):
@@ -27,43 +44,52 @@ def _run_async(coro):
         loop.close()
 
 
-async def _fetch_product_page(url: str) -> str | None:
-    """Fetch a product page with error handling."""
-    headers = {
-        "User-Agent": settings.user_agent,
-        "Accept": "text/html,application/xhtml+xml",
-    }
+async def _fetch_product_page(url: str, source: str):
+    """
+    Fetch a product page via Scrapling.
+    Amazon requires StealthyFetcher; Zappos / SSENSE use plain Fetcher first.
+    Returns a Scrapling Response (Selector) or None.
+    """
+    use_stealthy = source.upper() == "AMAZON"
+
     try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get(url, headers=headers, follow_redirects=True, timeout=20)
-            if response.status_code == 200:
-                return response.text
-            elif response.status_code == 404:
-                return None  # Product removed
-            else:
-                logger.warning(f"Refresh fetch got {response.status_code} for {url}")
-                return None
+        if use_stealthy:
+            response = _get_stealthy().fetch(url)
+        else:
+            response = _get_fetcher().get(url, stealthy_headers=True, follow_redirects=True)
+
+        if response.status == 200:
+            return response
+        elif response.status == 404:
+            return None
+        else:
+            logger.warning(f"Refresh fetch got {response.status} for {url}")
+            # Fallback to stealthy if basic fetcher failed
+            if not use_stealthy:
+                response = _get_stealthy().fetch(url)
+                if response.status == 200:
+                    return response
+            return None
     except Exception as e:
         logger.error(f"Refresh fetch error for {url}: {e}")
         return None
 
 
-def _extract_price_from_html(html: str, source: str) -> float | None:
-    """Extract price from product page HTML."""
-    soup = BeautifulSoup(html, "html.parser")
-
+def _extract_price(response, source: str) -> float | None:
+    """Extract price from product page using Scrapling CSS selectors."""
     price_selectors = {
         "ZAPPOS": ["span[itemprop='price']", "span.a-offscreen", "span[class*='price']"],
         "AMAZON": ["span.a-price .a-offscreen", "#priceblock_ourprice", ".a-price-whole"],
         "SSENSE": ["span[itemprop='price']", "span[class*='price']", ".price"],
+        "HNM": ["span.price-value", "span[class*='price']", ".product-price", "span[itemprop='price']"],
     }
 
     selectors = price_selectors.get(source, ["span[class*='price']", ".price"])
 
     for selector in selectors:
-        el = soup.select_one(selector)
+        el = css_first(response, selector)
         if el:
-            text = el.get_text(strip=True)
+            text = el.text.strip()
             match = re.search(r"[\d]+\.?\d*", text.replace(",", ""))
             if match:
                 return float(match.group())
@@ -71,9 +97,9 @@ def _extract_price_from_html(html: str, source: str) -> float | None:
     return None
 
 
-def _check_availability(html: str, source: str) -> bool:
-    """Check if product is in stock from the page HTML."""
-    html_lower = html.lower()
+def _check_availability(response) -> bool:
+    """Check if product is in stock from the page content."""
+    page_text = response.text.lower() if response.text else ""
 
     out_of_stock_signals = [
         "out of stock",
@@ -84,7 +110,7 @@ def _check_availability(html: str, source: str) -> bool:
     ]
 
     for signal in out_of_stock_signals:
-        if signal in html_lower:
+        if signal in page_text:
             return False
 
     return True
@@ -100,9 +126,9 @@ def refresh_product(self, product_id: str):
             logger.warning(f"Product {product_id} not found for refresh")
             return {"status": "not_found"}
 
-        html = _run_async(_fetch_product_page(product.product_url))
+        response = _run_async(_fetch_product_page(product.product_url, product.source.value))
 
-        if html is None:
+        if response is None:
             # Product page gone – mark as unavailable
             product.availability = False
             product.last_updated = datetime.now(timezone.utc)
@@ -110,12 +136,12 @@ def refresh_product(self, product_id: str):
             return {"status": "unavailable", "product_id": product_id}
 
         # Extract price
-        new_price = _extract_price_from_html(html, product.source.value)
+        new_price = _extract_price(response, product.source.value)
         if new_price and new_price > 0:
             product.price = new_price
 
         # Check availability
-        product.availability = _check_availability(html, product.source.value)
+        product.availability = _check_availability(response)
         product.last_updated = datetime.now(timezone.utc)
 
         db.commit()

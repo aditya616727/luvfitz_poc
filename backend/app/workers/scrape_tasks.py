@@ -10,6 +10,7 @@ from app.services.product_service import ProductService
 from app.scrapers.zappos_scraper import ZapposScraper
 from app.scrapers.amazon_scraper import AmazonScraper
 from app.scrapers.ssense_scraper import SSENSEScraper
+from app.scrapers.hnm_scraper import HnmScraper
 
 
 def _run_async(coro):
@@ -78,6 +79,25 @@ def scrape_ssense(self, max_products: int = 200):
         self.retry(exc=exc, countdown=60)
 
 
+@celery_app.task(name="app.workers.scrape_tasks.scrape_hnm", bind=True, max_retries=3)
+def scrape_hnm(self, max_products: int = 200):
+    logger.info("[Task] Starting H&M scrape")
+    try:
+        scraper = HnmScraper()
+        products = _run_async(scraper.scrape_and_normalize(max_products))
+        db = SessionLocal()
+        try:
+            service = ProductService(db)
+            count = service.bulk_upsert([p.to_dict() for p in products])
+            logger.info(f"[Task] H&M: stored {count} products")
+            return {"source": "HNM", "stored": count}
+        finally:
+            db.close()
+    except Exception as exc:
+        logger.error(f"[Task] H&M scrape failed: {exc}")
+        self.retry(exc=exc, countdown=60)
+
+
 @celery_app.task(name="app.workers.scrape_tasks.scrape_all")
 def scrape_all(max_products_per_source: int = 200):
     """Trigger all scrapers."""
@@ -85,4 +105,5 @@ def scrape_all(max_products_per_source: int = 200):
     scrape_zappos.delay(max_products_per_source)
     scrape_amazon.delay(max_products_per_source)
     scrape_ssense.delay(max_products_per_source)
+    scrape_hnm.delay(max_products_per_source)
     return {"status": "all scrapers triggered"}

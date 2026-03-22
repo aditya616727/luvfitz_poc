@@ -11,6 +11,7 @@ from app.services.outfit_service import OutfitService
 from app.scrapers.zappos_scraper import ZapposScraper
 from app.scrapers.amazon_scraper import AmazonScraper
 from app.scrapers.ssense_scraper import SSENSEScraper
+from app.scrapers.hnm_scraper import HnmScraper
 
 
 async def run_scrapers(max_per_source: int = 100):
@@ -21,6 +22,7 @@ async def run_scrapers(max_per_source: int = 100):
         ("Zappos", ZapposScraper()),
         ("Amazon", AmazonScraper()),
         ("SSENSE", SSENSEScraper()),
+        ("H&M", HnmScraper()),
     ]
 
     for name, scraper in scrapers:
