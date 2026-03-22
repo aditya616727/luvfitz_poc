@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 *.so
 .Python
-env/
+
 venv/
 .venv/
 *.egg-info/
@@ -19,7 +19,7 @@ out/
 .vercel
 
 # Environment
-.env
+
 .env.local
 .env.*.local
 
