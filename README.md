@@ -1,17 +1,17 @@
 # 👗 Mini Outfit Builder
 
-A production-ready fashion outfit generation system that scrapes products from **Zappos**, **Amazon**, and **SSENSE**, categorizes them using **Google Apparel Taxonomy**, and generates styled outfits searchable by **vibe** (Date Night, Streetwear, Casual, Retro, etc.).
+A production-ready fashion outfit generation system that scrapes products from **Zappos**, **Amazon**, **SSENSE**, and **H&M**, categorizes them using **Google Apparel Taxonomy**, and generates styled outfits searchable by **vibe** (Date Night, Streetwear, Casual, Retro, etc.).
 
 ---
 
 ## 🏗 Architecture
 
 ```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│ Zappos Scraper  │    │  Amazon Scraper   │    │ SSENSE Scraper  │
-└────────┬────────┘    └────────┬─────────┘    └────────┬────────┘
-         │                      │                       │
-         └──────────────┬───────┴───────────────────────┘
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│ Zappos Scraper  │    │  Amazon Scraper   │    │ SSENSE Scraper  │    │   H&M Scraper   │
+└────────┬────────┘    └────────┬─────────┘    └────────┬────────┘    └────────┬────────┘
+         │                      │                       │                      │
+         └──────────────┬───────┴───────────────────────┴──────────────────────┘
                         ▼
             ┌───────────────────────┐
             │  Product Normalization │
@@ -46,7 +46,7 @@ A production-ready fashion outfit generation system that scrapes products from *
 | **Database**    | PostgreSQL 16                        |
 | **Cache/Queue** | Redis 7                              |
 | **Workers**     | Celery (scraping, refresh, outfits)  |
-| **Scrapers**    | httpx, BeautifulSoup4                |
+| **Scrapers**    | Scrapling (Fetcher, StealthyFetcher)  |
 | **Frontend**    | Next.js 14, React 18, Tailwind CSS   |
 | **Containers**  | Docker, Docker Compose               |
 
@@ -91,7 +91,8 @@ poc_J2/
 │   │   │   ├── base.py         # Abstract scraper + normalization
 │   │   │   ├── zappos_scraper.py
 │   │   │   ├── amazon_scraper.py
-│   │   │   └── ssense_scraper.py
+│   │   │   ├── ssense_scraper.py
+│   │   │   └── hnm_scraper.py
 │   │   ├── workers/
 │   │   │   ├── celery_app.py   # Celery configuration + beat schedule
 │   │   │   ├── scrape_tasks.py # Scraping tasks
@@ -144,9 +145,17 @@ Cross-platform setup scripts handle everything — Docker validation, `.env` cre
 
 | OS | Command |
 |----|---------|
-| **macOS / Linux** | `./setup.sh` |
-| **Windows (CMD)** | `setup.bat` |
+| **macOS / Linux** | `chmod +x setup.sh && ./setup.sh` |
 | **Windows (PowerShell)** | `.\setup.ps1` |
+| **Windows (CMD)** | `setup.bat` |
+
+> **⚠️ Windows Users:** If the Docker build fails with errors like `/bin/bash^M: bad interpreter`, run the following **before** the setup command to fix line endings:
+> ```powershell
+> git config core.autocrlf false
+> git rm --cached -r .
+> git reset --hard
+> ```
+> Then run `.\setup.ps1` again. The `.gitattributes` file in the repo ensures correct line endings for future clones.
 
 #### Available Flags
 
@@ -303,7 +312,7 @@ docker compose exec backend python -m app.scripts.seed
 
 - **`q`** – Search/vibe query (e.g., `date-night`, `casual`, `retro`)
 - **`category`** – Filter: `TOP`, `BOTTOM`, `SHOE`, `ACCESSORY`
-- **`source`** – Filter: `ZAPPOS`, `AMAZON`, `SSENSE`
+- **`source`** – Filter: `ZAPPOS`, `AMAZON`, `SSENSE`, `HNM`
 - **`min_price` / `max_price`** – Price range filter
 - **`page` / `per_page`** – Pagination
 

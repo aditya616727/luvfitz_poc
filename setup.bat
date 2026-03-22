@@ -133,6 +133,12 @@ REM -- Implementations --
 
 :do_build_impl
 echo.
+echo -- Fixing line endings for Docker (Windows CRLF to LF) --
+git add --renormalize . >nul 2>&1
+git checkout -- . >nul 2>&1
+echo [OK] Line endings normalised
+
+echo.
 echo -- Building and starting containers --
 docker compose up --build -d
 echo [OK] All containers started

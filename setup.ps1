@@ -100,6 +100,16 @@ NEXT_PUBLIC_API_URL=
 }
 
 function Invoke-Build {
+    Write-Step "Fixing line endings for Docker (Windows CRLF → LF)"
+    # Git may check out files with CRLF on Windows.
+    # Re-normalise so Dockerfiles/scripts inside containers have LF.
+    try {
+        git ls-files -z | ForEach-Object { $_ } | Out-Null
+        git add --renormalize . 2>$null
+        git checkout -- . 2>$null
+    } catch { }
+    Write-OK "Line endings normalised"
+
     Write-Step "Building & starting containers"
     docker compose up --build -d
     if ($LASTEXITCODE -ne 0) { Write-Err "Build failed"; exit 1 }

@@ -29,7 +29,7 @@ app = FastAPI(
     title="Mini Outfit Builder API",
     description=(
         "Fashion outfit generation system that scrapes products from Zappos, Amazon, "
-        "and SSENSE, then creates styled outfits searchable by vibe."
+        "SSENSE, and H&M, then creates styled outfits searchable by vibe."
     ),
     version="1.0.0",
     lifespan=lifespan,
